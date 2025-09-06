@@ -1,8 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap");
 @import "tailwindcss";
 
 @theme {
   /* Primary Colors */
+  --color-faqPurple: hsl(281, 83%, 54%);
   --color-faqPurple-100: hsl(275, 100%, 97%);
   --color-faqPurple-600: hsl(292, 16%, 49%);
   --color-faqPurple-950: hsl(292, 42%, 14%);
@@ -10,11 +11,27 @@
   /* Neutral Colors */
   --color-faqWhite: hsl(0, 100%, 100%);
 
-  
   /* Font Family */
   --font-workSans: "Work Sans", sans-serif;
 }
 
 * {
   /* outline: 1px solid red; */
+}
+
+/* hide text */
+.question-text {
+  display: none;
+}
+.show-text .question-text {
+  display: block;
+}
+.minus-icon {
+  display: none;
+}
+.show-text .minus-icon {
+  display: inline;
+}
+.show-text .plus-icon {
+  display: none;
 }
