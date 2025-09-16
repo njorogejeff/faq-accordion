@@ -1,26 +1,25 @@
-# Frontend Mentor - FAQ accordion solution
+# Frontend Mentor - FAQ Accordion Solution
 
 This is a solution to the [FAQ Accordion Challenge on Frontend Mentor](https://www.frontendmentor.io/challenges/faq-accordion-wyfFdeBwBz). Frontend Mentor challenges help you improve your coding skills by building realistic projects.
 
-## Table of contents
+## Table of Contents
 
 - [Overview](#overview)
-  - [The challenge](#the-challenge)
+  - [The Challenge](#the-challenge)
   - [Screenshot](#screenshot)
   - [Links](#links)
-- [My process](#my-process)
-  - [Built with](#built-with)
-  - [What I learned](#what-i-learned)
-  - [Continued development](#continued-development)
-  - [Useful resources](#useful-resources)
+- [My Process](#my-process)
+  - [Development](#development)
+  - [Built With](#built-with)
+  - [What I Learned](#what-i-learned)
+  - [Continued Development](#continued-development)
+  - [Useful Resources](#useful-resources)
 - [Author](#author)
 - [Acknowledgments](#acknowledgments)
 
-**Note: Delete this note and update the table of contents based on what sections you keep.**
-
 ## Overview
 
-### The challenge
+### The Challenge:
 
 Users should be able to:
 
@@ -33,24 +32,22 @@ Users should be able to:
 
 [![FAQ Accordion Solution - Desktop](./assets/images/solution-images/deskop.png "FAQ Accordion Solution - Desktop")](https://faq-accordion-proj.vercel.app/)
 
-![FAQ Accordion Solution - Mobile](./assets/images/solution-images/mobile.png "FAQ Accordion Solution - Mobile")
-
-![FAQ Accordion Solution - Hover State](./assets/images/solution-images/deskop.png "FAQ Accordion Solution - Hover State")
-
-Add a screenshot of your solution. The easiest way to do this is to use Firefox to view your project, right-click the page and select "Take a Screenshot". You can choose either a full-height screenshot or a cropped one based on how long the page is. If it's very long, it might be best to crop it.
-
-Alternatively, you can use a tool like [FireShot](https://getfireshot.com/) to take the screenshot. FireShot has a free option, so you don't need to purchase it.
-
-Then crop/optimize/edit your image however you like, add it to your project, and update the file path in the image above.
-
-**Note: Delete this note and the paragraphs above when you add your screenshot. If you prefer not to add a screenshot, feel free to remove this entire section.**
-
 ### Links
 
 - Solution URL: [FAQ Accordion Solution CodeBase](https://github.com/njorogejeff/faq-accordion)
 - Live Site URL: [FAQ Accordion Solution Live Preview](https://faq-accordion-proj.vercel.app/)
 
-## My process
+## My Process
+
+### Development
+
+The JavaScript functionality enables interactive behavior for a group of elements on a webpage, typically used for FAQ sections or accordions. It first selects all elements with the class `.question` and stores them in the questions NodeList. Each `.question` element is expected to contain a button with the class `.question-btn`.
+
+For every `.question` element, the code locates its corresponding `.question-btn` and attaches a click event listener. When the button is clicked, the code iterates through all `.question` elements. If an element is not the one that was clicked, it removes the `show-text` class from it, ensuring that only one question can be expanded at a time.
+
+Finally, the clicked question toggles its own `show-text` class. This means if the question was collapsed, it expands to show its content; if it was already expanded, it collapses. This approach provides a clean and user-friendly way to display only one answer at a time, improving readability and user experience.
+
+A subtle but important detail is the use of `item !== question` to avoid collapsing the currently clicked question before toggling its state. This prevents unexpected behavior and ensures the toggle works as intended.
 
 ### Built with
 
@@ -60,54 +57,92 @@ Then crop/optimize/edit your image however you like, add it to your project, and
 - Mobile-first workflow
 - [Tailwind CSS](https://tailwindcss.com/) - CSS Framework
 - [Vite](https://vite.dev/) - Build Tool
-- [Styled Components](https://styled-components.com/) - For styles
 
-### What I learned
+### What I Learned
 
-Use this section to recap over some of your major learnings while working through this project. Writing these out and providing code samples of areas you want to highlight is a great way to reinforce your own knowledge.
+The major obstacle to this project came to the implementation of the FAQ Accordion functionality. The functionality invovles the following:
+- Finds all elements with the class `.question`.
+- For each question, finds its child button with class `.question-btn`.
+- On button click:
+  - Closes all other questions by removing the `show-text` class.
+  - Toggles `show-text` on the clicked question to open/close it.
 
-To see how you can add code snippets, see below:
+Code snippets:
 
 ```html
-<h1>Some HTML code I'm proud of</h1>
+<article class="question">
+  <!-- FAQ Question -->
+  <section class="question-title">
+    <h2 >What is Frontend Mentor, and how will it help me?</h2>
+    <button class="question-btn">
+      <span class="plus-icon">
+        <img src="icon-plus.svg" />
+      </span>
+      <span class="minus-icon">
+        <img src="icon-minus.svg" />
+      </span>
+    </button>
+  </section>
+
+  <!-- FAQ Answer -->
+  <section class="question-text">
+    <p>Frontend Mentor offers realisitic coding challenges ...</p>
+  </section>
+</article>
 ```
 
 ```css
-.proud-of-this-css {
-  color: papayawhip;
+/* hide text (default) */
+.question-text {
+  display: none;
+}
+.show-text .question-text {
+  display: block;
+}
+.minus-icon {
+  display: none;
+}
+.show-text .minus-icon {
+  display: inline;
+}
+.show-text .plus-icon {
+  display: none;
 }
 ```
 
 ```js
-const proudOfThisFunc = () => {
-  console.log("🎉");
-};
+btn.addEventListener("click", function () {
+  questions.forEach(function (item) {
+    if (item !== question) {
+      item.classList.remove("show-text");
+    }
+  });
+
+  question.classList.toggle("show-text");
+});
 ```
 
-If you want more help with writing markdown, we'd recommend checking out [The Markdown Guide](https://www.markdownguide.org/) to learn more.
+### Continued Development
 
-**Note: Delete this note and the content within this section and replace with your own learnings.**
+-  Addition of a null check. For missing buttons, if a `.question` has no `.question-btn`, `question.querySelector` returns `null` and `addEventListener` will throw.
+- Static NodeList: `querySelectorAll` returns a static list. Dynamically added questions won’t be handled unless I re-run this setup or use event delegation.
+- Performance: Each click loops through all questions (O(n)). This is fine for small lists; for large lists, I could track the currently open item.
+Accessibility: I am considering managing aria-expanded and aria-controls so screen readers get state changes. This ensures keyboard users can toggle via Enter/Space.
+- `NodeList.prototype.forEach` isn’t supported in very old browsers (like IE). I am considering to convert to an array or use a `for...of` loop.
 
-### Continued development
+### Useful Resources
 
-Use this section to outline areas that you want to continue focusing on in future projects. These could be concepts you're still not completely comfortable with or techniques you found useful that you want to refine and perfect.
-
-**Note: Delete this note and the content within this section and replace with your own plans for continued development.**
-
-### Useful resources
-
+- [Tailwind CSS - Getting Started](https://tailwindcss.com/docs/installation) - This resource provided me with the necessary information to get started with Tailwind CSS and additional styling.
 - [FreeCodeCamp - How to create a FAQ page](https://www.freecodecamp.org/news/javascript-projects-for-beginners/#heading-how-to-create-a-faq-page) - This tutorial helped me learn how to create a Frequently Asked Questions (FAQ) Page.
-- [Example resource 2](https://www.example.com) - This is an amazing article which helped me finally understand XYZ. I'd recommend it to anyone still learning this concept.
-
-**Note: Delete this note and replace the list above with resources that helped you during the challenge. These could come in handy for anyone viewing your solution or for yourself when you look back on this project in the future.**
 
 ## Author
 
-- Website - [Njoroge Jeff](https://github.com/njorogejeff/)
+- GitHub - [Njoroge Jeff](https://github.com/njorogejeff/)
 - Frontend Mentor - [@njorogejeff](https://www.frontendmentor.io/profile/njorogejeff)
 
 ## Acknowledgments
 
-This is where you can give a hat tip to anyone who helped you out on this project. Perhaps you worked in a team or got some inspiration from someone else's solution. This is the perfect place to give them some credit.
-
-**Note: Delete this note and edit this section's content as necessary. If you completed this challenge by yourself, feel free to delete this section entirely.**
+- Thanks to [Frontend Mentor](https://www.frontendmentor.io/) for the challenge and design assets.
+- The [Tailwind CSS](https://tailwindcss.com/) and [Vite](https://vite.dev/) teams for excellent docs and tooling.
+- This helpful [freeCodeCamp article on building a FAQ page](https://www.freecodecamp.org/news/javascript-projects-for-beginners/#heading-how-to-create-a-faq-page) for guidance.
+- The Frontend Mentor community for shared insights and feedback.
