@@ -51,10 +51,8 @@ A subtle but important detail is the use of `item !== question` to avoid collaps
 
 ### Built with
 
-- Semantic HTML5 markup
-- Tailwind CSS
-- Vite
 - Mobile-first workflow
+- Semantic HTML5 markup
 - [Tailwind CSS](https://tailwindcss.com/) - CSS Framework
 - [Vite](https://vite.dev/) - Build Tool
 
